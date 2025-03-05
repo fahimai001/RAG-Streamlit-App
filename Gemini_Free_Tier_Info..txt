@@ -1,0 +1,4 @@
+1. Access core Gemini models (like 2.0 Flash and 1.5 Flash) with no charge for input/output tokens. (https://ai.google.dev/gemini-api/docs/pricing)
+2. User can enjoy free context caching—up to 1 million tokens stored per hour—for efficient processing. (https://ai.google.dev/gemini-api/docs/pricing)
+3. Gemini Code Assist for individuals offers up to 6,000 requests per day (180,000 per month) at no cost. (https://siliconangle.com/2025/02/25/google-launches-free-gemini-code-assist-tier-individuals/)
+4. Start using the free tier globally via Google AI Studio with no subscription or credit card required. (https://siliconangle.com/2025/02/25/google-launches-free-gemini-code-assist-tier-individuals/)
