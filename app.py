@@ -9,8 +9,8 @@ from src.helper_rag import (
 )
 
 def main():
-    st.title("PDF RAG Application with Weaviate")
-    st.write("Upload a PDF file and type your question to extract relevant chunks from the document.")
+    st.title("PDF RAG Application with Weaviatedb")
+    st.write("Upload a PDF file and type your question to extract relevant information from the document.")
 
     env_vars = load_environment_variables()
 
