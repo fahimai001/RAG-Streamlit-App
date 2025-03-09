@@ -34,3 +34,11 @@ WEAVIATE_API_KEY=your_weaviate_api_key
    ```bash
    git clone https://github.com/fahimai001/RAG-Streamlit-App.git
    cd pdf-rag-app
+
+# Install Dependencies
+
+pip install -r requirements.txt
+
+# Run the Application
+
+pip install -r requirements.txt
