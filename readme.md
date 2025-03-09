@@ -1,6 +1,8 @@
 # PDF RAG Application with Weaviate
 
-This is a Streamlit-based application that allows users to upload a PDF document, ask questions about its content, and retrieve relevant chunks of text using a Retrieval-Augmented Generation (RAG) pipeline powered by Weaviate and Google Gemini.
+# Overview
+
+This Streamlit-based application enables users to upload a PDF document, ask questions about its content, and retrieve relevant text snippets using a Retrieval-Augmented Generation (RAG) pipeline. It leverages Weaviate for vector storage and Google Gemini for generating responses.
 
 ## Features
 
@@ -20,6 +22,13 @@ Before running the application, ensure you have the following:
 3. **Environment Variables**: Store your API keys in a `.env` file in the root directory of the project.
 
 ## Setup
+
+# Environment Variables
+
+Store API keys securely in a .env file at the project's root directory:
+
+GOOGLE_GEMINI_API_KEY=your_google_gemini_api_key
+WEAVIATE_API_KEY=your_weaviate_api_key
 
 1. **Clone the Repository**:
    ```bash
