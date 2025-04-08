@@ -4,7 +4,7 @@
 
 This Streamlit-based application enables users to upload a PDF document, ask questions about its content, and retrieve relevant text snippets using a Retrieval-Augmented Generation (RAG) pipeline. It leverages FAISS for vector storage and Google Gemini for generating responses.
 
-![RAG Application Demo](assets/rag-app-demo.gif)
+![RAG Application Demo](assets/rag.png.gif)
 
 ## Features
 
