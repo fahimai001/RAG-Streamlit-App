@@ -1,12 +1,10 @@
 import os
 import tempfile
 from dotenv import load_dotenv
-import weaviate
-from weaviate.classes.init import Auth
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_weaviate.vectorstores import WeaviateVectorStore
+from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
@@ -14,23 +12,13 @@ from langchain.schema.output_parser import StrOutputParser
 def load_environment_variables():
     load_dotenv()
     return {
-        "gemini_api_key": os.getenv("GEMINI_API_KEY"),
-        "weaviate_api_key": os.getenv("WEAVIATE_API_KEY"),
-        "weaviate_url": os.getenv("WEAVIATE_URL")
+        "gemini_api_key": os.getenv("GEMINI_API_KEY")
     }
 
 def initialize_llm_and_embeddings(api_key):
     llm = ChatGoogleGenerativeAI(api_key=api_key, model="gemini-2.0-flash")
     embeddings = GoogleGenerativeAIEmbeddings(google_api_key=api_key, model="models/embedding-001")
     return llm, embeddings
-
-def connect_to_weaviate(weaviate_url, weaviate_api_key):
-    client = weaviate.connect_to_weaviate_cloud(
-        cluster_url=weaviate_url,
-        auth_credentials=Auth.api_key(weaviate_api_key),
-        skip_init_checks=True
-    )
-    return client
 
 def load_and_split_pdf(uploaded_file):
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
@@ -43,8 +31,8 @@ def load_and_split_pdf(uploaded_file):
     docs = text_splitter.split_documents(documents)
     return docs
 
-def create_vector_store_and_retriever(docs, embeddings, client):
-    vector_db = WeaviateVectorStore.from_documents(docs, embeddings, client=client)
+def create_vector_store_and_retriever(docs, embeddings, client=None):
+    vector_db = FAISS.from_documents(docs, embeddings)
     retriever = vector_db.as_retriever(search_kwargs={"k": 5})
     return retriever
 

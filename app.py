@@ -2,21 +2,18 @@ import streamlit as st
 from src.helper_rag import (
     load_environment_variables,
     initialize_llm_and_embeddings,
-    connect_to_weaviate,
     load_and_split_pdf,
     create_vector_store_and_retriever,
     define_rag_chain
 )
 
 def main():
-    st.title("PDF RAG Application with Weaviatedb")
+    st.title("PDF RAG Application with FAISS")
     st.write("Upload a PDF file and type your question to extract relevant information from the document.")
 
     env_vars = load_environment_variables()
 
     llm, embeddings = initialize_llm_and_embeddings(env_vars["gemini_api_key"])
-
-    client = connect_to_weaviate(env_vars["weaviate_url"], env_vars["weaviate_api_key"])
 
     uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"])
 
@@ -24,7 +21,7 @@ def main():
         
         docs = load_and_split_pdf(uploaded_file)
 
-        retriever = create_vector_store_and_retriever(docs, embeddings, client)
+        retriever = create_vector_store_and_retriever(docs, embeddings)
 
         rag_chain = define_rag_chain(retriever, llm)
 
