@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores import Chroma
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.schema.output_parser import StrOutputParser
@@ -31,8 +31,18 @@ def load_and_split_pdf(uploaded_file):
     docs = text_splitter.split_documents(documents)
     return docs
 
-def create_vector_store_and_retriever(docs, embeddings, client=None):
-    vector_db = FAISS.from_documents(docs, embeddings)
+def create_vector_store_and_retriever(docs, embeddings, persist_directory=None, client_settings=None):
+    """
+    Creates a Chroma vector store from documents and returns a retriever.
+    If `persist_directory` is provided, the index will be saved to disk for reuse.
+    `client_settings` can be used to configure a remote Chroma server.
+    """
+    vector_db = Chroma.from_documents(
+        documents=docs,
+        embedding=embeddings,
+        persist_directory=persist_directory,
+        client_settings=client_settings
+    )
     retriever = vector_db.as_retriever(search_kwargs={"k": 5})
     return retriever
 

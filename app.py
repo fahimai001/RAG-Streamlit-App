@@ -8,31 +8,39 @@ from src.helper_rag import (
 )
 
 def main():
-    st.title("PDF RAG Application with FAISS")
-    st.write("Upload a PDF file and type your question to extract relevant information from the document.")
+    st.title("PDF RAG App")
+    st.write(
+        "Upload a PDF and ask questions – this app uses Chroma as its vector store "
+        "to retrieve the most relevant document chunks."
+    )
 
     env_vars = load_environment_variables()
-
     llm, embeddings = initialize_llm_and_embeddings(env_vars["gemini_api_key"])
 
     uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"])
+    if not uploaded_file:
+        return
 
-    if uploaded_file is not None:
-        
-        docs = load_and_split_pdf(uploaded_file)
+    docs = load_and_split_pdf(uploaded_file)
 
-        retriever = create_vector_store_and_retriever(docs, embeddings)
+    retriever = create_vector_store_and_retriever(
+        docs,
+        embeddings,
+        persist_directory="chroma_db"
+    )
 
-        rag_chain = define_rag_chain(retriever, llm)
+    rag_chain = define_rag_chain(retriever, llm)
 
-        question = st.text_input("Type your question about the document:")
+    question = st.text_input("Type your question about the document:")
+    if not question:
+        return
 
-        if question:
-            st.write("Processing...")
-            llm_response = rag_chain.invoke(question)
+    st.write("Processing…")
+    answer = rag_chain.invoke(question)
 
-            st.subheader("Result:")
-            st.write(llm_response)
+    st.subheader("Result:")
+    st.write(answer)
+
 
 if __name__ == "__main__":
     main()
